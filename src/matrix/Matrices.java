@@ -79,4 +79,45 @@ public final class Matrices {
 		return result;
 	}
 	
+	public static Matrix multiply(Matrix matrix, double multiplier) throws MatrixException {
+		if(matrix == null) {
+			throw new MatrixException(MatrixException.NULL_INSTANCE);
+		}
+		
+		int vs = matrix.getVerticalSize();
+		int hs = matrix.getHorizontalSize();
+		Matrix result = new Matrix(vs, hs);
+		for(int i = 0; i < vs; i++) {
+			for(int j = 0; j < hs; j++) {
+				result.setValue(matrix.getValue(i, j) * multiplier, i, j);
+			}
+		}
+		return result;
+	}
+	
+	public static Matrix multiply(Matrix matrix1, Matrix matrix2) throws MatrixException {
+		if(matrix1 == null || matrix2 == null) {
+			throw new MatrixException(MatrixException.NULL_INSTANCE);
+		}
+		
+		int n = matrix1.getHorizontalSize();
+		if(n != matrix2.getVerticalSize()) {
+			throw new MatrixException(MatrixException.UNEQUAL_COLUMN_ROW_COUNT);
+		}
+		int vs = matrix1.getVerticalSize();
+		int hs = matrix2.getHorizontalSize();
+		double sum;
+		Matrix result = new Matrix(vs, hs);
+		for(int i = 0; i < vs; i++) {
+			for(int j = 0; j < hs; j++) {
+				sum = 0.0;
+				for(int k = 0; k < n; k++) {
+					sum += matrix1.getValue(i, k) * matrix2.getValue(k, j);
+				}
+				result.setValue(sum, i, j);
+			}
+		}
+		return result;
+	}
+
 }
