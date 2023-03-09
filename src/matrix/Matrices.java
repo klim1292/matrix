@@ -119,5 +119,29 @@ public final class Matrices {
 		}
 		return result;
 	}
-
+	
+	public static Matrix transpose(Matrix matrix) throws MatrixException {
+		if(matrix == null) {
+			throw new MatrixException(MatrixException.NULL_INSTANCE);
+		}
+		
+		int vs = matrix.getHorizontalSize();
+		int hs = matrix.getVerticalSize();
+		Matrix result = new Matrix(vs, hs);
+		for(int i = 0; i < vs; i++) {
+			for(int j = 0; j < hs; j++) {
+				result.setValue(matrix.getValue(j, i), i, j);
+			}
+		}
+		return result;
+	}
+	
+	public static Matrix getUnit(int size) throws MatrixException {
+		Matrix result = new Matrix(size, size);
+		for(int i = 0; i < size; i++) {
+			result.setValue(1.0, i, i);
+		}
+		return result;
+	}
+	
 }
