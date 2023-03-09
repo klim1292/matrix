@@ -160,6 +160,41 @@ public final class Matrices {
 		return det;
 	}
 	
+	public static Matrix invert(Matrix matrix) throws MatrixException {
+		double det = det(matrix);
+		if(det == 0.0) {
+			throw new MatrixException(MatrixException.DEGENERATE);
+		}
+		int vs = matrix.getVerticalSize();
+		int hs = matrix.getHorizontalSize();
+		Matrix result = new Matrix(vs, hs);
+		for(int i = 0; i < vs; i++) {
+			for(int j = 0; j < hs; j++) {
+				result.setValue(A(matrix, i, j) / det, j, i);
+			}
+		}
+		return result;
+	}
+	
+	public static Matrix pow(Matrix matrix, int n) throws MatrixException {
+		if(matrix == null) {
+			throw new MatrixException(MatrixException.NULL_INSTANCE);
+		}
+		
+		int vs = matrix.getVerticalSize();
+		if(vs != matrix.getHorizontalSize()) {
+			throw new MatrixException(MatrixException.NOT_SQUARE);
+		}
+		if(n == 0) {
+			return getUnit(vs);
+		}
+		Matrix result = matrix;
+		for(int i = 1; i < Math.abs(n); i++) {
+			result = multiply(result, matrix);
+		}
+		return (n > 0) ? result : invert(result);
+	}
+	
 	private static double A(Matrix matrix, int i, int j) throws MatrixException {
 		return Math.pow(-1.0, i + j + 2.0) * M(matrix, i, j);
 	}
