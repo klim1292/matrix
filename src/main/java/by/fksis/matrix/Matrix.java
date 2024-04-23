@@ -2,7 +2,7 @@ package by.fksis.matrix;
 
 import java.util.Arrays;
 
-public class Matrix implements Cloneable {
+public class Matrix {
 	
 	private double[][] m;
 	
@@ -14,10 +14,22 @@ public class Matrix implements Cloneable {
 	}
 	
 	public Matrix(double[][] m) {
-		if(m == null || m.length < 1 || Arrays.stream(m).anyMatch(row -> row.length < 1 || row.length != m[0].length)) {
+		if(m == null || m.length < 1 || m[0] == null || m[0].length < 1) {
 			throw new IllegalArgumentException();
 		}
-		this.m = m;
+		for(int i = 1; i < m.length; i++) {
+			if(m[i] == null || m[i].length != m[0].length) {
+				throw new IllegalArgumentException();
+			}
+		}
+		this.m = new double[m.length][m[0].length];
+		for(int i = 0; i < m.length; i++) {
+			this.m[i] = Arrays.copyOf(m[i], m[i].length);
+		}
+	}
+	
+	public Matrix(Matrix matrix) {
+		this(matrix.m);
 	}
 	
 	public int getVerticalSize() {
@@ -29,31 +41,25 @@ public class Matrix implements Cloneable {
 	}
 	
 	public double getValue(int i, int j) {
-		if(!isIndexesRange(i, j)) {
+		if(!isInBounds(i, j)) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
 		return m[i][j];
 	}
 	
-	public void setValue(double value, int i, int j) {
-		if(!isIndexesRange(i, j)) {
+	public void setValue(int i, int j, double value) {
+		if(!isInBounds(i, j)) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
 		m[i][j] = value;
 	}
 	
-	private boolean isIndexesRange(int i, int j) {
-		return (i >= 0 && i < m.length) && (j >= 0 && j < m[0].length);
+	public boolean isZero() {
+		return Arrays.stream(m).flatMapToDouble(Arrays::stream).allMatch(v -> Double.compare(v, 0.0) == 0);
 	}
 	
-	@Override
-	public Matrix clone() throws CloneNotSupportedException {
-		Matrix matrix = (Matrix)super.clone();
-		matrix.m = m.clone();
-		for(int i = 0; i < matrix.m.length; i++) {
-			matrix.m[i] = matrix.m[i].clone();
-		}
-		return matrix;
+	private boolean isInBounds(int i, int j) {
+		return (i >= 0 && i < m.length) && (j >= 0 && j < m[0].length);
 	}
 	
 	@Override

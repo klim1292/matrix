@@ -62,7 +62,7 @@ public class MatrixTest {
 		Matrix result = new Matrix(new double[][] {
 			{4.6, 4.6, 4.6},
 			{2.3, 4.6, 2.3},
-			{0.0, 4.6, 2.3}});		
+			{0.0, 4.6, 2.3}});
 		assertTrue(result.equals(Matrices.multiply(m1, 2.3)));
 	}
 	
