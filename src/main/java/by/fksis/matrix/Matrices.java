@@ -13,7 +13,7 @@ public final class Matrices {
 	}
 	
 	public static void randomFill(Matrix matrix, double minValue, double maxValue) {
-		if(matrix == null) {
+		if(matrix == null || minValue >= maxValue) {
 			throw new IllegalArgumentException();
 		}
 		int vs = matrix.getVerticalSize();

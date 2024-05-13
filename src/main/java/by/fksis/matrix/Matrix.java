@@ -2,7 +2,7 @@ package by.fksis.matrix;
 
 import java.util.Arrays;
 
-public class Matrix {
+public final class Matrix {
 	
 	private double[][] m;
 	
